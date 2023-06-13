@@ -1,54 +1,23 @@
 <template>
-  <div class="search">
+  <div>
     <el-input v-model="searchText"
               placeholder="请输入搜索关键字"
               clearable
               @clear="clearSearch"
               @keyup.enter="performSearch"
               style="margin-bottom: 20px">
-
-      <template #prepend>
-        <el-icon>
-          <Search />
-        </el-icon>
-      </template>
     </el-input>
 
     <el-table :data="paginatedData"
-  
-              highlight-current-row
               :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
               borde>
       <el-table-column prop="id"
-                       label="Items"></el-table-column>
-      <el-table-column prop="name"
-                       label="名称"></el-table-column>
-      <el-table-column prop="icon"
-                       label="图标样式">
-        <template #default="{ row }">
-          <el-image :src="row.icon">
-            <template #error>
-              <div class="image-slot">
-                <el-icon>
-                  <Picture />
-                </el-icon>
-              </div>
-            </template>
-          </el-image>
-
-        </template>
+                       label="id"></el-table-column>
+      <el-table-column prop="productId"
+                       label="产品id"></el-table-column>
+      <el-table-column prop="subjectId"
+                       label="主题id">
       </el-table-column>
-
-      <el-table-column prop="subjectCount"
-                       label="主题数量"></el-table-column>
-      <el-table-column prop="showStatus"
-                       label="显示状态">
-        <template #default="{ row }">
-          <span v-if="row.showStatus == 0">隐藏</span>
-          <span v-else>显示</span>
-        </template></el-table-column>
-      <el-table-column prop="sort"
-                       label="排序"></el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
           <el-button v-if="row.isNew"
@@ -100,65 +69,33 @@
 
     <el-pagination :current-page="currentPage"
                    :page-size="pageSize"
-                   background
                    :total="filteredtableData.length"
                    @current-change="handlePageChange">
     </el-pagination>
 
     <el-dialog class="form"
-               center
-               width="30%"
                v-model="editDialogVisible"
                @close="editDialogVisible = false">
       <el-form>
-        <el-form-item label="图标名称">
-          <el-select v-model="editItem.name"
-                     placeholder="请选择">
-            <el-option v-for="option in nameOptions"
-                       :key="option.value"
-                       :label="option.label"
-                       :value="option.value">
-            </el-option>
-          </el-select>
+        <el-form-item label="id">
+          <el-input v-model="editItem.id" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="图标路径">
-          <el-upload action="/upload"
-                     v-model="editItem.icon"
-                     list-type="picture"
-                     :auto-upload="false">
-            <el-button slot="trigger"
-                       size="small"
-                       circle
-                       type="primary"><el-icon>
-                <el-icon>
-                  <Upload />
-                </el-icon></el-icon></el-button>
-          </el-upload>
+        <el-form-item label="产品id">
+          <el-input v-model="editItem.productId"></el-input>
         </el-form-item>
 
-        <el-form-item label="主题数量">
-          <el-input-number v-model="editItem.subjectCount"
-                           min="0"></el-input-number>
+        <el-form-item label="主题id">
+          <el-input v-model="editItem.subjectId"></el-input>
         </el-form-item>
-
-        <el-form-item label="显示状态">
-          <el-radio-group v-model="editItem.showStatus">
-            <el-radio :label="1">显示</el-radio>
-            <el-radio :label="0">隐藏</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item label="排序顺序">
-          <el-input-number v-model="editItem.sort"></el-input-number>
-        </el-form-item>
+        
       </el-form>
-      <template #footer>
+      <div slot="footer">
         <el-button @click="editDialogVisible = false">取消</el-button>
 
         <el-button type="primary"
                    @click="saveEdit">保存</el-button>
-      </template>
+      </div>
     </el-dialog>
   </div>
   <div class="button">
@@ -181,8 +118,8 @@
   </div>
 </template>
 <script>
-import api from '@/http/cms_topic_category.js'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import api from '@/http/cms_subject_product_relation.js'
+import { ElMessage, ElMessageBox, roleTypes } from 'element-plus'
 
 const dataCache = {
   tableData: [],
@@ -191,16 +128,7 @@ export default {
   data () {
     return {
       nameOptions: [
-        { label: '宠物', value: '宠物' },
-        { label: '影音', value: '影音' },
-        { label: '好物', value: '好物' },
-        { label: '玩机', value: '玩机' },
-        { label: '安卓', value: '安卓' },
-        { label: '游戏', value: '游戏' },
-        { label: '美化', value: '美化' },
-        { label: '硬件', value: '硬件' },
-        { label: '软件', value: '软件' },
-        { label: '万物', value: '万物' },
+        
       ],
       json: {
         current: 1,
@@ -216,12 +144,11 @@ export default {
       editItem: {},
       selectedRow: null,
 
+
       // 其他的 data 属性
     }
   },
   computed: {
-
-
     paginatedData () {
       const startIndex = (this.currentPage - 1) * this.pageSize
       const endIndex = startIndex + this.pageSize
@@ -382,12 +309,9 @@ export default {
     addAPI () {
       ElMessage.success('添加数据ing')
       const newAPI = {
-        icon: '',
-        id: 0,
-        name: '',
-        showStatus: 0,
-        sort: 0,
-        subjectCount: 0,
+        "id": 0,
+  "productId": 0,
+  "subjectId": 0,
         isNew: true,
       }
       this.tableData.push(newAPI)
@@ -423,10 +347,11 @@ export default {
       this.ping = !this.ping
       if (this.ping) {
         this.SortUp()
-        ElMessage.success('顺序排序')
+        ElMessage.success("顺序排序")
       } else {
         this.SortDown()
-        ElMessage.success('逆序排序')
+        ElMessage.success("逆序排序")
+
       }
     },
   },
@@ -438,10 +363,9 @@ export default {
 
 <style>
 body {
-  color: #e40d0d;
   margin: 0;
   padding: 0;
-  background-image: url("@/imgs/keli.png");
+  
   background-size: cover;
   opacity: 0.9 !important; /* 使用 !important 提高优先级 */
   background-repeat: no-repeat;
@@ -451,30 +375,4 @@ body {
   justify-content: center;
   align-items: center;
 }
-/* 弹窗 */
-.el-dialog,
-.el-pager li {
-  background-color: rgba(255, 0, 0, 0);
-  background-image: url(../../imgs/xie.webp);
-  background-size: 100% 100%;
-  color: #e40d0d;
-}
-
-.el-dialog__header {
-  padding-top: 10px !important;
-  background-color: rgb(255, 255, 255, 0);
-  border-radius: 14px 14px 0 0;
-}
-.el-dialog__body {
-  border-top: 0 !important;
-  background-color: rgba(19, 31, 59, 0);
-}
-.el-dialog__footer {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0);
-}
-.search {
-  margin-top: 10px;
-}
-
 </style>

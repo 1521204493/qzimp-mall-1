@@ -19,14 +19,12 @@ const hideLoading = () => {
   }
 }
 
-// =============================================
-
 const One = async (id) => {
   showLoading() // 显示加载动画
 
   try {
     const response = await api.request({
-      url: '/mall/ums-resource-category/one/' + id,
+      url: '/mall/cms-subject/one/' + id,
       method: 'get',
     })
     return response
@@ -42,7 +40,7 @@ const Del = async (id) => {
 
   try {
     const response = await api.request({
-      url: '/mall/ums-resource-category/del/' + id,
+      url: '/mall/cms-subject/del/' + id,
       method: 'get',
     })
     return response
@@ -58,7 +56,7 @@ const Edit = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/ums-resource-category/edit',
+      url: '/mall/cms-subject/edit',
       method: 'post',
       data,
     })
@@ -74,7 +72,7 @@ const Add = async (data) => {
   showLoading() // 显示加载动画
   try {
     const response = await api.request({
-      url: '/mall/ums-resource-category/add',
+      url: '/mall/cms-subject/add',
       method: 'post',
       data,
     })
@@ -91,7 +89,7 @@ const Page = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/ums-resource-category/page',
+      url: '/mall/cms-subject/page',
       method: 'post',
       data,
     })

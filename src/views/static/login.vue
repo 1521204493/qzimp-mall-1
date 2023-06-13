@@ -99,7 +99,7 @@ export default defineComponent({
               that.setToken(userinfo.token)
               that.fillUserinfo(userinfo);
               this.rou = userStore.token;
-              this.$router.push('/backend_api');
+              this.$router.push('/');
             }
             else {
               //      return false;

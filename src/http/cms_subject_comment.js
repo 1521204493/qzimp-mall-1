@@ -24,7 +24,7 @@ const One = async (id) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-album/one/' + id,
+      url: '/mall/cms-subject-comment/one/' + id,
       method: 'get',
     })
     return response
@@ -40,7 +40,7 @@ const Del = async (id) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-album/del/' + id,
+      url: '/mall/cms-subject-comment/del/' + id,
       method: 'get',
     })
     return response
@@ -56,7 +56,7 @@ const Edit = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-album/edit',
+      url: '/mall/cms-subject-comment/edit',
       method: 'post',
       data,
     })
@@ -72,7 +72,7 @@ const Add = async (data) => {
   showLoading() // 显示加载动画
   try {
     const response = await api.request({
-      url: '/mall/pms-album/add',
+      url: '/mall/cms-subject-comment/add',
       method: 'post',
       data,
     })
@@ -89,7 +89,7 @@ const Page = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-album/page',
+      url: '/mall/cms-subject-comment/page',
       method: 'post',
       data,
     })

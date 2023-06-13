@@ -24,7 +24,7 @@ const One = async (id) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-feight-template/one/' + id,
+      url: '/mall/cms-subject-product-relation/one/' + id,
       method: 'get',
     })
     return response
@@ -40,7 +40,7 @@ const Del = async (id) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-feight-template/del/' + id,
+      url: '/mall/cms-subject-product-relation/del/' + id,
       method: 'get',
     })
     return response
@@ -56,7 +56,7 @@ const Edit = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-feight-template/edit',
+      url: '/mall/cms-subject-product-relation/edit',
       method: 'post',
       data,
     })
@@ -72,7 +72,7 @@ const Add = async (data) => {
   showLoading() // 显示加载动画
   try {
     const response = await api.request({
-      url: '/mall/pms-feight-template/add',
+      url: '/mall/cms-subject-product-relation/add',
       method: 'post',
       data,
     })
@@ -89,7 +89,7 @@ const Page = async (data) => {
 
   try {
     const response = await api.request({
-      url: '/mall/pms-feight-template/page',
+      url: '/mall/cms-subject-product-relation/page',
       method: 'post',
       data,
     })
@@ -100,4 +100,5 @@ const Page = async (data) => {
     hideLoading() // 隐藏加载动画
   }
 }
+
 export default { One, Del, Edit, Add, Page }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useUserStore } from '../store/user'
 //创建axios实例
 const instance = axios.create({
-  baseURL: 'http://api.jqrjq.cn/',
+  baseURL: 'https://mall.qzimp.cn/doc.html',
   timeout: 6000,
 })
 

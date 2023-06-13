@@ -11,30 +11,58 @@
     <el-table :data="paginatedData"
               :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
               borde>
-      <el-table-column prop="id"
-                       label="Items"></el-table-column>
-      <el-table-column prop="name"
-                       label="名称"></el-table-column>
-      <el-table-column prop="icon"
-                       label="图标样式">
-        <template #default="{ row }">
-          <img v-if="isNaN(Number(row.icon, 9))"
-               :src="row.icon"
-               alt="图标"
-               width="30"
-               height="30" />
-          
+      
+    <el-table-column prop="albumPics"
+                       label="专辑图片">
+    <template #default="{row}">
+      <img :src="row.albumPics.split(',')" width="100" height="100">
+    </template>
+  </el-table-column>
+      <el-table-column prop="categoryId"
+                       label="类别id"></el-table-column>
+       
+      <el-table-column prop="categoryName"
+                       label="类名"></el-table-column>
+      <el-table-column prop="collectCount"
+                       label="收藏数"></el-table-column>
+      <el-table-column prop="commentCount"
+                       label="评论数量">
+        </el-table-column>
+        <el-table-column prop="content"
+                       label="内容"></el-table-column>
+        <el-table-column prop="createTime"
+                       label="编辑时间"></el-table-column>
+        <el-table-column prop="description"
+                       label="描述"></el-table-column>
+        <el-table-column prop="forwardCount"
+                       label="转发数"></el-table-column>
+        <el-table-column prop="id"
+                       label="id"></el-table-column>
+        <el-table-column prop="pic"
+                       label="图片">
+    <template #default="{row}">
+      <img :src="row.pic" width="100" height="100">
+    </template>
+  </el-table-column>
+        <el-table-column prop="productCount"
+                       label="产品数"></el-table-column>
+       <el-table-column prop="readCount"
+                       label="浏览数"></el-table-column>
+        <el-table-column prop="recommendStatus"
+                       label="推荐状态">
+                       <template #default="{ row }">
+          <span v-if="row.showStatus == 0">推荐</span>
+          <span v-else>不推荐</span>
         </template>
       </el-table-column>
-
-      <el-table-column prop="subjectCount"
-                       label="主题数量"></el-table-column>
-      <el-table-column prop="showStatus"
+        <el-table-column prop="showStatus"
                        label="显示状态">
         <template #default="{ row }">
           <span v-if="row.showStatus == 0">隐藏</span>
           <span v-else>显示</span>
         </template></el-table-column>
+        <el-table-column prop="title"
+                       label="标题"></el-table-column>
       <el-table-column prop="sort"
                        label="排序"></el-table-column>
       <el-table-column label="操作">
@@ -96,20 +124,9 @@
                v-model="editDialogVisible"
                @close="editDialogVisible = false">
       <el-form>
-        <el-form-item label="图标名称">
-          <el-select v-model="editItem.name"
-                     placeholder="请选择">
-            <el-option v-for="option in nameOptions"
-                       :key="option.value"
-                       :label="option.label"
-                       :value="option.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="图标路径">
+        <el-form-item label="专辑图片">
           <el-upload action="/upload"
-                     v-model="editItem.icon"
+                     v-model="editItem.albumPics"
                      list-type="picture"
                      :auto-upload="false">
             <el-button slot="trigger"
@@ -122,9 +139,64 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="主题数量">
-          <el-input-number v-model="editItem.subjectCount"></el-input-number>
+        <el-form-item label="类别id">
+          <el-input v-model="editItem.categoryId"></el-input>
         </el-form-item>
+
+        <el-form-item label="类名">
+          <el-input v-model="editItem.categoryName"></el-input>
+        </el-form-item>
+
+        <el-form-item label="收藏数">
+          <el-input-number v-model="editItem.collectCount"></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="评论数量">
+          <el-input-number v-model="editItem.commentCount"></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="内容">
+          <el-input v-model="editItem.content"></el-input>
+        </el-form-item>
+
+        <el-form-item label="编辑时间">
+          <el-date-picker v-model="editItem.editTime"
+                          type="datetime"
+                          placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+
+        <el-form-item label="描述">
+          <el-input v-model="editItem.description"></el-input>
+        </el-form-item>
+
+        <el-form-item label="转发数">
+          <el-input-number v-model="editItem.forwardCount"></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="id">
+          <el-input v-model="editItem.id" disabled></el-input>
+        </el-form-item>
+
+        <el-form-item label="图片">
+          <el-upload action="/upload"
+                     v-model="editItem.image"
+                     list-type="picture"
+                     :auto-upload="false">
+                     <el-button slot="trigger"
+                       size="small"
+                       circle
+                       type="primary"><el-icon name="el-icon-upload"></el-icon></el-button>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item label="产品数">
+          <el-input-number v-model="editItem.productCount"></el-input-number>
+        </el-form-item>
+
+        <el-form-item label="浏览数">
+          <el-input-number v-model="editItem.viewCount"></el-input-number>
+</el-form-item>
 
         <el-form-item label="显示状态">
           <el-radio-group v-model="editItem.showStatus">
@@ -132,6 +204,12 @@
             <el-radio :label="0">隐藏</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label = "推荐状态" >
+          <el-radio-group v-model="editItem.recommendStatus" >
+          <el-radio :label="1" > 推荐 </el-radio> 
+            <el-radio :label="0"> 不推荐 </el-radio> 
+          </el-radio-group>
+</el-form-item>
 
         <el-form-item label="排序顺序">
           <el-input-number v-model="editItem.sort"></el-input-number>
@@ -165,8 +243,9 @@
   </div>
 </template>
 <script>
-import api from '@/http/cms_subject_category.js'
+import api from '@/http/cms_subject.js'
 import { ElMessage, ElMessageBox, roleTypes } from 'element-plus'
+import { requiredNumber } from 'element-plus/es/components/table-v2/src/common'
 
 const dataCache = {
   tableData: [],
@@ -174,17 +253,9 @@ const dataCache = {
 export default {
   data () {
     return {
+      pic:'',
       nameOptions: [
-        { label: '家具', value: '家具' },
-        { label: '保健品', value: '保健品' },
-        { label: '饮料', value: '饮料' },
-        { label: '电子产品', value: '电子产品' },
-        { label: '服装', value: '服装' },
-        { label: '美妆', value: '美妆' },
-        { label: '食品', value: '食品' },
-        { label: '汽车', value: '汽车' },
-        { label: '旅游', value: '旅游' },
-        { label: '体育用品', value: '体育用品' },
+        
       ],
       json: {
         current: 1,
@@ -289,6 +360,9 @@ export default {
           console.error('保存修改失败:', error)
         })
     },
+    created(){
+      this.pic
+    },
     Alter (row) {
       api
         .Edit(row)
@@ -365,12 +439,22 @@ export default {
     addAPI () {
       ElMessage.success('添加数据ing')
       const newAPI = {
-        icon: '',
-        id: 0,
-        name: '',
-        showStatus: 0,
-        sort: 0,
-        subjectCount: 0,
+        "albumPics": "",
+  "categoryId": 0,
+  "categoryName": "",
+  "collectCount": 0,
+  "commentCount": 0,
+  "content": "",
+  "createTime": "",
+  "description": "",
+  "forwardCount": 0,
+  "id": 0,
+  "pic": "",
+  "productCount": 0,
+  "readCount": 0,
+  "recommendStatus": 0,
+  "showStatus": 0,
+  "title": "",
         isNew: true,
       }
       this.tableData.push(newAPI)
@@ -424,7 +508,7 @@ export default {
 body {
   margin: 0;
   padding: 0;
-  
+
   background-size: cover;
   opacity: 0.9 !important; /* 使用 !important 提高优先级 */
   background-repeat: no-repeat;
